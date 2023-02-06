@@ -35,4 +35,4 @@ UserInterfaceState.xcuserstate
 node_modules
 
 s3cors.json
-s3bucket.json
+s3policy.json
