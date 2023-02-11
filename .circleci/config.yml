@@ -51,6 +51,10 @@ jobs:
     steps:
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
+            # install node and checkout code
+      - node/install:
+          node-version: "14.21.2"
+      - checkout
       - run:
           name: Check install
           command: |
@@ -81,10 +85,10 @@ jobs:
 workflows:
   udagram:
     jobs:
-      - build
       - test:
+      - build
           requires:
-            - build
+            - test
       - hold:
           filters:
             branches:
