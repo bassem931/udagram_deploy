@@ -47,7 +47,7 @@ jobs:
             npm run api:build
   test:
     docker:
-      - image: "cimg/node:13.12-browsers"
+      - image: "cimg/node:14.21.2-browsers"
     steps:
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
