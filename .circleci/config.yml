@@ -4,6 +4,7 @@ orbs:
   node: circleci/node@5.0.2
   eb: circleci/aws-elastic-beanstalk@2.0.1
   aws-cli: circleci/aws-cli@3.1.1
+  browser-tools: circleci/browser-tools@1.4.1
   # different jobs are calles later in the workflows sections
 jobs:
   build:
@@ -34,11 +35,6 @@ jobs:
           name: Front-End Lint
           command: |
             npm run frontend:lint
-      # TODO: unit test the frontend
-      - run:
-          name: Front-End unit test
-          command: |
-            npm run frontend:test
       # TODO: Build the frontend app
       - run:
           name: Front-End Build
@@ -49,6 +45,22 @@ jobs:
           name: API Build
           command: |
             npm run api:build
+  test:
+    docker:
+      - image: "cimg/node:13.12-browsers"
+    steps:
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
+      - run:
+          name: Check install
+          command: |
+            google-chrome --version
+            chromedriver --version
+      # TODO: unit test the frontend
+      - run:
+          name: Front-End unit test
+          command: |
+            npm run frontend:test
   # deploy step will run only after manual approval
   deploy:
     docker:
@@ -70,6 +82,7 @@ workflows:
   udagram:
     jobs:
       - build
+      - test
       - hold:
           filters:
             branches:
