@@ -51,7 +51,7 @@ jobs:
     steps:
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
-      # install node and checkout code
+        # install node and checkout code
       - node/install:
           node-version: "14.21.2"
       - checkout
@@ -85,8 +85,8 @@ jobs:
 workflows:
   udagram:
     jobs:
-      - test:
-      - build
+      - test
+      - build:
           requires:
             - test
       - hold:
