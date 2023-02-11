@@ -14,15 +14,15 @@ jobs:
     steps:
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
+      - run:
+          name: Check install
+          command: |
+            google-chrome --version
+            chromedriver --version
       # install node and checkout code
       - node/install:
           node-version: "14.15"
       - checkout
-      - run:
-        name: Check install
-        command: |
-          google-chrome --version
-          chromedriver --version
       # Use root level package.json to install dependencies in the frontend app
       - run:
           name: Install Front-End Dependencies
