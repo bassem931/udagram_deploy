@@ -12,10 +12,17 @@ jobs:
       # the base image can run most needed actions with orbs
       - image: "cimg/node:14.15"
     steps:
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       # install node and checkout code
       - node/install:
           node-version: "14.15"
       - checkout
+      - run:
+        name: Check install
+        command: |
+          google-chrome --version
+          chromedriver --version
       # Use root level package.json to install dependencies in the frontend app
       - run:
           name: Install Front-End Dependencies
@@ -35,6 +42,11 @@ jobs:
           name: Front-End Lint
           command: |
             npm run frontend:lint
+      # TODO: unit test the frontend
+      - run:
+          name: Front-End unit test
+          command: |
+            npm run frontend:test
       # TODO: Build the frontend app
       - run:
           name: Front-End Build
@@ -45,26 +57,6 @@ jobs:
           name: API Build
           command: |
             npm run api:build
-  test:
-    docker:
-      - image: "cimg/node:14.21.2-browsers"
-    steps:
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
-        # install node and checkout code
-      - node/install:
-          node-version: "14.21.2"
-      - checkout
-      - run:
-          name: Check install
-          command: |
-            google-chrome --version
-            chromedriver --version
-      # TODO: unit test the frontend
-      - run:
-          name: Front-End unit test
-          command: |
-            npm run frontend:test
   # deploy step will run only after manual approval
   deploy:
     docker:
